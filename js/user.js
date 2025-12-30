@@ -12,18 +12,20 @@ onAuthStateChanged(auth, async (user) => {
   const historyEl = document.getElementById("history");
   const noticesEl = document.getElementById("notices");
 
-  const userSnap = await getDoc(doc(db, "users", user.uid));
-
+  // 🔹 GLOBAL CYLINDER COUNT
   if (balanceEl) {
-    balanceEl.innerText = `Cylinders Left: ${userSnap.data().cylindersLeft}`;
+    const globalSnap = await getDoc(doc(db, "settings", "global"));
+    balanceEl.innerText =
+      "Cylinders Available: " + globalSnap.data().cylindersAvailable;
   }
 
+  // 🔹 USER BOOKINGS
   if (historyEl) {
     const q = query(collection(db, "bookings"), where("userId", "==", user.uid));
     const snap = await getDocs(q);
-
     historyEl.innerHTML = "";
-    snap.forEach((b) => {
+
+    snap.forEach(b => {
       historyEl.innerHTML += `
         <tr>
           <td>${b.data().status}</td>
@@ -33,10 +35,11 @@ onAuthStateChanged(auth, async (user) => {
     });
   }
 
+  // 🔹 NOTICES
   if (noticesEl) {
     const snap = await getDocs(collection(db, "notices"));
     noticesEl.innerHTML = "";
-    snap.forEach((n) => {
+    snap.forEach(n => {
       noticesEl.innerHTML += `
         <li>
           ${n.data().text}<br>
