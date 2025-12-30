@@ -5,28 +5,19 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <header>User Dashboard</header>
-
 <div class="container">
-
-  <!-- PROFILE -->
   <div class="card">
     <h3>My Profile</h3>
 
     <input id="profileName" placeholder="Full Name">
     <input id="profileEmail" disabled>
     <input id="profileAddress" placeholder="Address">
-
     <button onclick="updateProfile()">Update Profile</button>
   </div>
-
-  <!-- STOCK -->
   <div class="card">
     <h3 id="balance">Loading...</h3>
   </div>
-
-  <!-- ACTIONS -->
   <div class="card">
     <button onclick="location.href='booking.html'">Book Cylinder</button>
     <button onclick="location.href='payment.html'">Make Payment</button>
@@ -34,9 +25,7 @@
     <button onclick="location.href='notices.html'">Notices</button>
     <button onclick="logout()">Logout</button>
   </div>
-
 </div>
-
 <script type="module" src="js/user.js"></script>
 <script type="module" src="js/auth.js"></script>
 </body>

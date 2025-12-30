@@ -5,20 +5,14 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <header>Admin Dashboard</header>
-
 <div class="container">
-
-  <!-- STOCK -->
   <div class="card">
     <h3>Global Cylinder Stock</h3>
     <p id="stock">Loading...</p>
     <input id="newStock" type="number" min="0" placeholder="New stock">
     <button onclick="updateStock()">Update Stock</button>
   </div>
-
-  <!-- BOOKINGS -->
   <div class="card">
     <h3>Pending Bookings</h3>
     <table class="table">
@@ -34,8 +28,6 @@
       <tbody id="bookings"></tbody>
     </table>
   </div>
-
-  <!-- PAYMENTS -->
   <div class="card">
     <h3>Payments</h3>
     <table class="table">
@@ -52,18 +44,13 @@
       <tbody id="payments"></tbody>
     </table>
   </div>
-
-  <!-- NOTICE -->
   <div class="card">
     <h3>Post Notice</h3>
     <input id="notice" placeholder="Notice text">
     <button onclick="addNotice()">Post Notice</button>
   </div>
-
   <button onclick="logout()">Logout</button>
-
 </div>
-
 <script type="module" src="js/admin.js"></script>
 <script type="module" src="js/auth.js"></script>
 </body>
