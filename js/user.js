@@ -14,8 +14,18 @@ onAuthStateChanged(auth, async user=>{
     const snap=await getDocs(q);
     snap.forEach(d=>history.innerHTML+=`<li>${d.data().status}</li>`);
   }
-  if(notices){
-    const snap=await getDocs(collection(db,"notices"));
-    snap.forEach(d=>notices.innerHTML+=`<li>${d.data().text}</li>`);
-  }
+  if (notices) {
+  const snap = await getDocs(collection(db, "notices"));
+  snap.forEach(d => {
+    const n = d.data();
+    const date = new Date(n.createdAt).toLocaleString();
+
+    notices.innerHTML += `
+      <li>
+        <b>${n.text}</b><br>
+        <small>${date}</small>
+      </li>
+    `;
+  });
+}
 });
