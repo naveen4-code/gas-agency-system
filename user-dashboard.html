@@ -5,13 +5,16 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="card">
-  <h2>Welcome User</h2>
-  <p id="balance"></p>
-  <a href="booking.html"><button>Book Cylinder</button></a>
-  <a href="history.html"><button>Booking History</button></a>
-  <a href="notices.html"><button>Notices</button></a>
-  <button onclick="logout()">Logout</button>
+<header>User Dashboard</header>
+<div class="container">
+  <div class="card">
+    <h3 id="balance"></h3>
+    <button onclick="location.href='booking.html'">Book Cylinder</button>
+    <button onclick="location.href='payment.html'">Make Payment</button>
+    <button onclick="location.href='history.html'">Booking History</button>
+    <button onclick="location.href='notices.html'">View Notices</button>
+    <button onclick="logout()">Logout</button>
+  </div>
 </div>
 <script type="module" src="js/user.js"></script>
 </body>

@@ -9,5 +9,5 @@ window.bookCylinder = async () => {
     requestedAt: new Date().toISOString()
   });
 
-  alert("Cylinder request sent");
+  alert("Request sent");
 };

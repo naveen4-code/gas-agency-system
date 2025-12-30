@@ -5,10 +5,20 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="card">
-  <h2>Payment Options</h2>
-  <button onclick="cod()">Cash on Delivery</button>
-  <img src="assets/paytm-qr.png" width="200">
+<header>Gas Cylinder Payment</header>
+<div class="container">
+  <div class="card">
+    <h3>Payment Details</h3>
+    <p><b>Amount:</b> ₹900</p>
+    <p class="small">Standard domestic cylinder charge</p>
+    <input id="card" placeholder="Card / UPI ID">
+    <input id="name" placeholder="Name on Card">
+    
+    <button onclick="makePayment()">Pay Now</button>
+    <p class="small">
+      This is a demo payment (no real transaction).
+    </p>
+  </div>
 </div>
 <script type="module" src="js/payment.js"></script>
 </body>
