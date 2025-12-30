@@ -1,7 +1,7 @@
 import { auth, db } from "./firebase.js";
-import { addDoc, collection } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { logAction } from "./logger.js";
+import { addDoc, collection } from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 window.bookCylinder = async () => {
   await addDoc(collection(db, "bookings"), {
     userId: auth.currentUser.uid,

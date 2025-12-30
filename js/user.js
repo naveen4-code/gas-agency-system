@@ -14,16 +14,14 @@ onAuthStateChanged(auth, async user=>{
     const snap=await getDocs(q);
     snap.forEach(d=>history.innerHTML+=`<li>${d.data().status}</li>`);
   }
-  if (notices) {
+if (notices) {
   const snap = await getDocs(collection(db, "notices"));
   snap.forEach(d => {
     const n = d.data();
-    const date = new Date(n.createdAt).toLocaleString();
-
     notices.innerHTML += `
       <li>
         <b>${n.text}</b><br>
-        <small>${date}</small>
+        <small>${new Date(n.createdAt).toLocaleString()}</small>
       </li>
     `;
   });

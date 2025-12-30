@@ -1,19 +1,20 @@
 import { db } from "./firebase.js";
 import {
-  collection, getDocs, updateDoc, doc, getDoc
+  collection, getDocs, getDoc, doc, updateDoc, addDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-const bookingSnap = await getDocs(collection(db, "bookings"));
-for (const booking of bookingSnap.docs) {
-  const data = booking.data();
-  const userDoc = await getDoc(doc(db, "users", data.userId));
-  const user = userDoc.data();
-  bookings.innerHTML += `
+const bookingsDiv = document.getElementById("bookings");
+const snap = await getDocs(collection(db, "bookings"));
+for (const b of snap.docs) {
+  const booking = b.data();
+  const userSnap = await getDoc(doc(db, "users", booking.userId));
+  const user = userSnap.data();
+  bookingsDiv.innerHTML += `
     <div class="table-card">
       <p><b>Name:</b> ${user.name}</p>
       <p><b>Email:</b> ${user.email}</p>
       <p><b>Address:</b> ${user.address}</p>
-      <p><b>Status:</b> ${data.status}</p>
-      <button onclick="approve('${booking.id}', '${data.userId}')">
+      <p><b>Status:</b> ${booking.status}</p>
+      <button onclick="approve('${b.id}', '${booking.userId}')">
         Approve
       </button>
     </div>
@@ -26,11 +27,13 @@ window.approve = async (bookingId, userId) => {
   await updateDoc(userRef, {
     cylindersLeft: userSnap.data().cylindersLeft - 1
   });
+
   await updateDoc(doc(db, "bookings", bookingId), {
     status: "Approved",
     approvedAt: new Date().toISOString()
   });
-  alert("Booking approved and cylinder count updated");
+
+  alert("Approved. Cylinder count updated.");
   location.reload();
 };
 window.addNotice = async () => {
@@ -38,6 +41,5 @@ window.addNotice = async () => {
     text: notice.value,
     createdAt: new Date().toISOString()
   });
-
   alert("Notice posted");
 };
