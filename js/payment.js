@@ -1,0 +1,1 @@
+window.cod=()=>alert("Cash on Delivery Selected");
