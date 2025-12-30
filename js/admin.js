@@ -1,21 +1,24 @@
 import { db } from "./firebase.js";
 import {
-  collection, getDocs, getDoc, doc, updateDoc, addDoc
+  collection, getDocs, getDoc, doc, updateDoc, setDoc, addDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const stockEl = document.getElementById("stock");
 const bookingsBody = document.getElementById("bookings");
+const paymentsBody = document.getElementById("payments");
 
-// 🔹 LOAD GLOBAL STOCK
 const globalRef = doc(db, "settings", "global");
-const globalSnap = await getDoc(globalRef);
 
-if (globalSnap.exists()) {
-  stockEl.innerText =
-    "Cylinders Available: " + globalSnap.data().cylindersAvailable;
+// 🔹 Ensure stock doc exists
+const globalSnap = await getDoc(globalRef);
+if (!globalSnap.exists()) {
+  await setDoc(globalRef, { cylindersAvailable: 100 });
 }
 
-// 🔹 LOAD BOOKINGS
+stockEl.innerText =
+  "Cylinders Available: " + (await getDoc(globalRef)).data().cylindersAvailable;
+
+// 🔹 Pending bookings
 const bookingsSnap = await getDocs(collection(db, "bookings"));
 
 for (const b of bookingsSnap.docs) {
@@ -37,13 +40,32 @@ for (const b of bookingsSnap.docs) {
     </tr>`;
 }
 
-// 🔹 APPROVE BOOKING (REDUCE STOCK)
+// 🔹 Payments table
+for (const b of bookingsSnap.docs) {
+  const booking = b.data();
+  if (booking.status !== "Paid") continue;
+
+  const userSnap = await getDoc(doc(db, "users", booking.userId));
+  const user = userSnap.data();
+
+  paymentsBody.innerHTML += `
+    <tr>
+      <td>${user.name}</td>
+      <td>${user.email}</td>
+      <td>${user.address}</td>
+      <td>${booking.status}</td>
+      <td>₹${booking.amount}</td>
+      <td>${new Date(booking.paidAt).toLocaleString()}</td>
+    </tr>`;
+}
+
+// 🔹 Approve booking
 window.approve = async (bookingId) => {
   const globalSnap = await getDoc(globalRef);
   const available = globalSnap.data().cylindersAvailable;
 
   if (available <= 0) {
-    alert("No cylinders available");
+    alert("No stock available");
     return;
   }
 
@@ -52,32 +74,25 @@ window.approve = async (bookingId) => {
   });
 
   await updateDoc(doc(db, "bookings", bookingId), {
-    status: "Approved",
-    approvedAt: new Date().toISOString()
+    status: "Approved"
   });
 
-  alert("Booking approved");
   location.reload();
 };
 
-// 🔹 UPDATE STOCK MANUALLY
+// 🔹 Update stock
 window.updateStock = async () => {
   const value = document.getElementById("newStock").value;
-
-  if (value === "" || value < 0) {
-    alert("Enter valid stock number");
-    return;
-  }
+  if (value === "" || value < 0) return alert("Invalid value");
 
   await updateDoc(globalRef, {
     cylindersAvailable: Number(value)
   });
 
-  alert("Stock updated");
   location.reload();
 };
 
-// 🔹 ADD NOTICE
+// 🔹 Add notice
 window.addNotice = async () => {
   await addDoc(collection(db, "notices"), {
     text: notice.value,

@@ -10,18 +10,17 @@
 
 <div class="container">
 
-  <!-- GLOBAL STOCK -->
+  <!-- STOCK -->
   <div class="card">
     <h3>Global Cylinder Stock</h3>
     <p id="stock">Loading...</p>
-
-    <input id="newStock" type="number" min="0" placeholder="Enter new stock">
+    <input id="newStock" type="number" min="0" placeholder="New stock">
     <button onclick="updateStock()">Update Stock</button>
   </div>
 
   <!-- BOOKINGS -->
   <div class="card">
-    <h3>Pending Booking Requests</h3>
+    <h3>Pending Bookings</h3>
     <table class="table">
       <thead>
         <tr>
@@ -36,7 +35,25 @@
     </table>
   </div>
 
-  <!-- NOTICES -->
+  <!-- PAYMENTS -->
+  <div class="card">
+    <h3>Payments</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Status</th>
+          <th>Amount</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="payments"></tbody>
+    </table>
+  </div>
+
+  <!-- NOTICE -->
   <div class="card">
     <h3>Post Notice</h3>
     <input id="notice" placeholder="Notice text">
