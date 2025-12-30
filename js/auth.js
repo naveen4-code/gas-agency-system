@@ -6,26 +6,32 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { logAction } from "./logger.js";
 window.register = async () => {
   try {
-    const user = await createUserWithEmailAndPassword(
+    const userName = document.getElementById("name").value.trim();
+    const userEmail = document.getElementById("email").value.trim();
+    const userPassword = document.getElementById("password").value;
+    if (!userName || !userEmail || !userPassword) {
+      alert("All fields are required");
+      return;
+    }
+    const userCredential = await createUserWithEmailAndPassword(
       auth,
-      email.value,
-      password.value
+      userEmail,
+      userPassword
     );
-    await setDoc(doc(db, "users", user.user.uid), {
-      name: name.value,
-      email: email.value,
+    await setDoc(doc(db, "users", userCredential.user.uid), {
+      name: userName,
+      email: userEmail,
       role: "user",
-      cylindersLeft: 12
+      cylindersLeft: 12,
+      createdAt: new Date().toISOString()
     });
     alert("Registration successful. Please login.");
     location.href = "index.html";
   } catch (error) {
     if (error.code === "auth/email-already-in-use") {
-      alert("This email is already registered. Please login instead.");
+      alert("This email is already registered. Please login.");
     } else if (error.code === "auth/weak-password") {
-      alert("Password should be at least 6 characters.");
-    } else if (error.code === "auth/invalid-email") {
-      alert("Invalid email format.");
+      alert("Password must be at least 6 characters.");
     } else {
       alert(error.message);
     }
